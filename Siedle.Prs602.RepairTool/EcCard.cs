@@ -30,8 +30,9 @@ namespace Siedle.Prs602.RepairTool
         {
             ProjectFlags = new bool[ProjectIds.Length,FlagNames.Length];
 
-            // Project 1 & 2: sk8, schleu3, schleu4, sperre false
-            // Project 3:  sk8, sperre false
+            // Project 1: sk8, schleu3, schleu4, sperre false
+            // Project 2: sk6, sk7, sk8, schleu3, schleu4, sperre false
+            // Project 3: sk8, sperre false
             // All other should be true when active
             for (int i = 0; i < ProjectIds.Length; i++)
             {
@@ -39,7 +40,11 @@ namespace Siedle.Prs602.RepairTool
                 {
                     var name = FlagNames[j];
                     var proj = ProjectIds[i];
-                    if (name == "sk8" || name == "sperre")
+                    if ((name == "sk6" || name == "sk7") && (proj == 2))
+                    {
+                        ProjectFlags[i, j] = false;
+                    }
+                    else if (name == "sk8" || name == "sperre")
                     {
                         ProjectFlags[i, j] = false;
                     }
