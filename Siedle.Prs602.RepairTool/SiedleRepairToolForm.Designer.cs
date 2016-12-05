@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SiedleRepairToolForm));
             this.label1 = new System.Windows.Forms.Label();
             this.OpenDatabaseDialog = new System.Windows.Forms.OpenFileDialog();
             this.ExitButton = new System.Windows.Forms.Button();
@@ -115,7 +116,7 @@
             this.fixDescriptionTextsCheckbox.Text = "Fix description texts";
             this.fixDescriptionTextsCheckbox.UseVisualStyleBackColor = true;
             // 
-            // trimTextsCheckbox
+            // sanitizeInputCheckbox
             // 
             this.sanitizeInputCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.sanitizeInputCheckbox.AutoSize = true;
@@ -280,6 +281,7 @@
             this.Controls.Add(this.OpenButton);
             this.Controls.Add(this.ExitButton);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SiedleRepairToolForm";
             this.Text = "Siedle PRS602-01 Repair tool";
             this.ResumeLayout(false);
