@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Siedle.Prs602.RepairTool</RootNamespace>
     <AssemblyName>Siedle.Prs602.RepairTool</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,6 +37,9 @@
     <ApplicationIcon>key1_preferences.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=4242.42.42.42, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.2022.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -50,6 +54,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EcCard.cs" />
+    <Compile Include="EditTags.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditTags.Designer.cs">
+      <DependentUpon>EditTags.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Project.cs" />
     <Compile Include="SiedleDatabaseManager.cs" />
     <Compile Include="SiedleRepairToolForm.cs">
       <SubType>Form</SubType>
@@ -59,6 +70,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="EditTags.resx">
+      <DependentUpon>EditTags.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SiedleRepairToolForm.resx">
       <DependentUpon>SiedleRepairToolForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -70,7 +84,9 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -102,5 +102,17 @@ namespace Siedle.Prs602.RepairTool
                 project3TextBox.Text = OpenDatabaseDialog.FileName;
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            //var file1 = new FileInfo(project1TextBox.Text);
+            //var file2 = new FileInfo(project2TextBox.Text);
+            //var file3 = new FileInfo(project3TextBox.Text);
+
+            var tagsForm = new EditTags();
+
+            tagsForm.Show(this);
+        }
     }
 }
