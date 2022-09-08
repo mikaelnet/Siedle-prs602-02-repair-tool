@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace Siedle.Prs602.RepairTool.Model
@@ -279,6 +280,16 @@ namespace Siedle.Prs602.RepairTool.Model
                 throw new ArgumentOutOfRangeException(nameof(sluiceIndex));
 
             return $"Sluice{sluiceIndex + 1}";
+        }
+
+        public void SetAllDoors(bool value)
+        {
+            foreach (var pi in GetType().GetProperties()
+                         .Where(pi => pi.PropertyType == typeof(bool) && pi.CanWrite)
+                         .Where(pi => pi.Name.StartsWith("Door") || pi.Name.StartsWith("Sluice")))
+            {
+                pi.SetValue(this, value);
+            }
         }
     }
 }

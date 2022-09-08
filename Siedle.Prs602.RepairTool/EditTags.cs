@@ -18,6 +18,12 @@ namespace Siedle.Prs602.RepairTool
         private ProjectWrapper _projectWrapper;
         //private BindingSource tagsBindingSource = new BindingSource();
 
+        private DataGridViewTextBoxColumn _idColumn;
+        private DataGridViewTextBoxColumn _rfidColumn;
+        private DataGridViewTextBoxColumn _descriptionColumn;
+        private DataGridViewTextBoxColumn _printedNumberColumn;
+        private DataGridViewTextBoxColumn _belongsToColumn;
+
         public EditTags()
         {
             InitializeComponent();
@@ -40,66 +46,91 @@ namespace Siedle.Prs602.RepairTool
 
             tagsGridView.AutoGenerateColumns = false;
             tagsGridView.DataSource = _projectWrapper.AllCards;
-            tagsGridView.Columns.Add(new DataGridViewTextBoxColumn()
+
+            _idColumn = new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = nameof(CardWrapper.Index),
                 Name = "Id",
                 ReadOnly = true,
-                SortMode = DataGridViewColumnSortMode.Automatic
-            });
-            tagsGridView.Columns.Add(new DataGridViewTextBoxColumn()
+                SortMode = DataGridViewColumnSortMode.Automatic,
+            };
+            _rfidColumn = new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = nameof(CardWrapper.CardNumber),
-                Name = "RFID"
-            });
-
-            var descriptionColumn = new DataGridViewTextBoxColumn()
+                Name = "RFID",
+            };
+            _descriptionColumn = new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = nameof(CardWrapper.Description),
                 Name = "Description",
-                SortMode = DataGridViewColumnSortMode.Automatic
+                SortMode = DataGridViewColumnSortMode.Automatic,
             };
-            tagsGridView.Columns.Add(descriptionColumn);
-
-            tagsGridView.Columns.Add(new DataGridViewTextBoxColumn()
+            _printedNumberColumn = new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = nameof(CardWrapper.PrintedNumber),
-                Name = "Number",
+                Name = "No",
                 SortMode = DataGridViewColumnSortMode.Automatic,
-                ReadOnly = true
-            });
-
-            tagsGridView.Columns.Add(new DataGridViewTextBoxColumn()
+                ReadOnly = true,
+                Width = 100,
+            };
+            _belongsToColumn = new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = nameof(CardWrapper.BelongsTo),
                 Name = "Belongs to",
                 SortMode = DataGridViewColumnSortMode.Automatic,
-                ReadOnly = true
-            });
+                ReadOnly = true,
+                DividerWidth = 2,
+            };
 
+            tagsGridView.Columns.Add(_idColumn);
+            tagsGridView.Columns.Add(_rfidColumn);
+            tagsGridView.Columns.Add(_descriptionColumn);
+            tagsGridView.Columns.Add(_printedNumberColumn);
+            tagsGridView.Columns.Add(_belongsToColumn);
+
+            _idColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+            _rfidColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+            _descriptionColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+            _printedNumberColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+            _belongsToColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.BottomLeft;
+
+            DataGridViewCheckBoxColumn checkbox = null;
             for (int i = 0; i < 8*3; i++)
             {
                 if (!_projectWrapper.IsDoorEnabled(i))
                     continue;
 
-                var checkbox = new DataGridViewCheckBoxColumn()
+                checkbox = new DataGridViewCheckBoxColumn()
                 {
                     DataPropertyName = CardWrapper.GetDoorPropertyName(i),
                     Name = _projectWrapper.GetDoorName(i),
-                    SortMode = DataGridViewColumnSortMode.NotSortable
+                    SortMode = DataGridViewColumnSortMode.NotSortable,
+                    DefaultCellStyle = new DataGridViewCellStyle()
+                    {
+                        BackColor = Color.Beige, 
+                    }
                 };
                 tagsGridView.Columns.Add(checkbox);
             }
 
+            if (checkbox != null)
+                checkbox.DividerWidth = 2;
+
+            checkbox = null;
             for (int i = 0; i < 4 * 3; i++)
             {
                 if (!_projectWrapper.IsSluiceEnabled(i))
                     continue;
 
-                var checkbox = new DataGridViewCheckBoxColumn()
+                checkbox = new DataGridViewCheckBoxColumn()
                 {
                     DataPropertyName = CardWrapper.GetSluicePropertyName(i),
-                    Name = _projectWrapper.GetSluiceName(i)
+                    Name = _projectWrapper.GetSluiceName(i),
+                    SortMode = DataGridViewColumnSortMode.NotSortable,
+                    DefaultCellStyle = new DataGridViewCellStyle()
+                    {
+                        BackColor = Color.AntiqueWhite,
+                    }
                 };
                 tagsGridView.Columns.Add(checkbox);
             }
@@ -107,6 +138,11 @@ namespace Siedle.Prs602.RepairTool
             tagsGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             tagsGridView.ColumnHeadersHeight = 50;
             tagsGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
+            tagsGridView.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 9.75F, FontStyle.Bold);
+            /*foreach (DataGridViewColumn column in tagsGridView.Columns)
+            {
+                column.HeaderCell.Style.Font = new Font("Tahoma", 9.75F, FontStyle.Bold);
+            }*/
 
             tagsGridView.CellPainting += new DataGridViewCellPaintingEventHandler(tagsGridView_CellPainting);
 
@@ -115,10 +151,32 @@ namespace Siedle.Prs602.RepairTool
 
         private void TagsGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (tagsGridView.Columns[e.ColumnIndex].Name == "Description")
+            if (tagsGridView.Columns[e.ColumnIndex] == _idColumn)
+            {
+                _projectWrapper.SortId();
+            }
+            else if (tagsGridView.Columns[e.ColumnIndex] == _rfidColumn)
+            {
+                _projectWrapper.SortRfid();
+            }
+            else if (tagsGridView.Columns[e.ColumnIndex] == _descriptionColumn)
             {
                 _projectWrapper.SortDescription();
             }
+            else if (tagsGridView.Columns[e.ColumnIndex] == _printedNumberColumn)
+            {
+                _projectWrapper.SortPrintedNumber();
+            }
+            else if (tagsGridView.Columns[e.ColumnIndex] == _belongsToColumn)
+            {
+                _projectWrapper.SortBelongsTo();
+            }
+            else
+            {
+                return;
+            }
+
+            tagsGridView.Invalidate();
         }
 
         void tagsGridView_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
@@ -158,7 +216,46 @@ namespace Siedle.Prs602.RepairTool
             }
         }
 
-       
+        private void activeCardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in tagsGridView.SelectedRows)
+            {
+                var cardWrapper = row.DataBoundItem as CardWrapper;
+                if (cardWrapper == null)
+                    continue;
+
+                cardWrapper.SetAllDoors(true);
+            }
+            tagsGridView.Invalidate();
+        }
+
+        private void cancelCardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in tagsGridView.SelectedRows)
+            {
+                var cardWrapper = row.DataBoundItem as CardWrapper;
+                if (cardWrapper == null)
+                    continue;
+                
+                cardWrapper.SetAllDoors(false);
+            }
+            tagsGridView.Invalidate();
+        }
+
+        private void tagsGridView_CellContextMenuStripNeeded(object sender, DataGridViewCellContextMenuStripNeededEventArgs e)
+        {
+            var gridView = sender as DataGridView;
+            if (gridView == null)
+                return;
+
+            if (e.RowIndex < 0)
+                return;
+
+            if (gridView.SelectedRows.Count == 0)
+                return;
+
+            e.ContextMenuStrip = cardContextMenuStrip;
+        }
     }
 
 }

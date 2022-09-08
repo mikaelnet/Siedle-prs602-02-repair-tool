@@ -208,9 +208,28 @@ namespace Siedle.Prs602.RepairTool.Model
             return project.Sluices[sluiceIndex % 4];
         }
 
+        public void SortId()
+        {
+            _allCards.Sort((a, b) => a.Index - b.Index);
+        }
+
+        public void SortRfid()
+        {
+            _allCards.Sort((a, b) => string.CompareOrdinal(a.CardNumber, b.CardNumber));
+        }
+
         public void SortDescription()
         {
             _allCards.Sort((a, b) => string.CompareOrdinal(a.Description, b.Description));
         }
+        public void SortPrintedNumber()
+        {
+            _allCards.Sort((a, b) => string.CompareOrdinal(a.PrintedNumber, b.PrintedNumber));
+        }
+        public void SortBelongsTo()
+        {
+            _allCards.Sort((a, b) => string.CompareOrdinal(a.BelongsTo, b.BelongsTo));
+        }
+
     }
 }

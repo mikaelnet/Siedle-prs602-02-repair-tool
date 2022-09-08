@@ -57,7 +57,7 @@ namespace Siedle.Prs602.RepairTool.Model
 
         public void Save()
         {
-            _xml.Save($"{ProjectFile.FullName}.2");
+            _xml.Save($"{ProjectFile.FullName}");
         }
 
         public void AddCard(int index, int entryNumber, string cardNumber, string description)
