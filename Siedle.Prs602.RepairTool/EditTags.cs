@@ -29,12 +29,14 @@ namespace Siedle.Prs602.RepairTool
         {
             var projectFiles = new[]
             {
-                @".\Siedle Project 1.xml",
-                @".\Siedle Project 2.xml",
-                @".\Siedle Project 3.xml"
+                @"..\..\..\Siedle Project 1.xml",
+                @"..\..\..\Siedle Project 2.xml",
+                @"..\..\..\Siedle Project 3.xml"
             };
             _projectWrapper = new ProjectWrapper(projectFiles.Select(f => new FileInfo(f)));
-            _projectWrapper.LoadAll();
+            var messages = _projectWrapper.LoadAll().ToList();
+            
+            
 
             tagsGridView.AutoGenerateColumns = false;
             tagsGridView.DataSource = _projectWrapper.AllCards;
@@ -58,6 +60,22 @@ namespace Siedle.Prs602.RepairTool
                 SortMode = DataGridViewColumnSortMode.Automatic
             };
             tagsGridView.Columns.Add(descriptionColumn);
+
+            tagsGridView.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                DataPropertyName = nameof(CardWrapper.PrintedNumber),
+                Name = "Number",
+                SortMode = DataGridViewColumnSortMode.Automatic,
+                ReadOnly = true
+            });
+
+            tagsGridView.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                DataPropertyName = nameof(CardWrapper.BelongsTo),
+                Name = "Belongs to",
+                SortMode = DataGridViewColumnSortMode.Automatic,
+                ReadOnly = true
+            });
 
             for (int i = 0; i < 8*3; i++)
             {
@@ -110,7 +128,7 @@ namespace Siedle.Prs602.RepairTool
                 return;
 
             // Check that we're in a header cell
-            if (e.RowIndex != -1 || e.ColumnIndex < 3)
+            if (e.RowIndex != -1 || e.ColumnIndex < 5)
                 return;
 
             e.PaintBackground(e.ClipBounds, true);

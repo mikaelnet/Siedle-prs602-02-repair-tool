@@ -60,7 +60,13 @@
     <Compile Include="EditTags.Designer.cs">
       <DependentUpon>EditTags.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\Card.cs" />
+    <Compile Include="Model\CardWrapper.cs" />
+    <Compile Include="Model\Door.cs" />
     <Compile Include="Model\Project.cs" />
+    <Compile Include="Model\ProjectWrapper.cs" />
+    <Compile Include="Model\Sluice.cs" />
+    <Compile Include="Model\XmlElementExtensions.cs" />
     <Compile Include="SiedleDatabaseManager.cs" />
     <Compile Include="SiedleRepairToolForm.cs">
       <SubType>Form</SubType>
